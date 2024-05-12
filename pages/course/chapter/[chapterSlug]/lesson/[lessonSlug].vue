@@ -25,7 +25,7 @@ const lesson = computed(() => {
     
     <h2 class="text-lg font-semibold upp mb-2">{{ lesson?.title }}</h2>
 
-    <div class="flex flex-col space-x-4 mb-5">
+    <div class="flex flex-col space-y-1 mb-5">
       <a v-if="lesson?.sourceUrl"
       class=" font-normal text-sm underline text-gray-500 hover:text-gray-800"
       :href="lesson.sourceUrl"> Download URL </a>
@@ -37,7 +37,11 @@ const lesson = computed(() => {
       </a>
     </div>
     
-    <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
+    <VideoPlayer 
+      v-if="lesson.videoId" 
+      :video-id="lesson.videoId" 
+      class="mb-2"
+    />
 
     <p>{{ lesson?.text }}</p>
   </div>
