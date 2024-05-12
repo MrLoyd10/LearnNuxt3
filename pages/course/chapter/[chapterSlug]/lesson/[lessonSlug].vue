@@ -1,4 +1,6 @@
 <script setup>
+import VideoPlayer from '~/components/VideoPlayer.vue';
+
 const course = useCourse(); //Auto import na yung useCourse galing sa composables folder./////////
 const route = useRoute(); //Build in na ito sa nuxt
 
@@ -16,7 +18,7 @@ const lesson = computed(() => {
 </script>
 
 <template>
-  <div>
+  <div v-if="lesson">
     <h3 class="font-semibold text-slate-400 uppercase mb-2">
       Lesson {{ chapter?.number }}-{{ lesson?.number }}
     </h3>
@@ -34,8 +36,14 @@ const lesson = computed(() => {
         Download Video
       </a>
     </div>
+    
+    <VideoPlayer v-if="lesson.videoId" :video-id="lesson.videoId" />
 
     <p>{{ lesson?.text }}</p>
+  </div>
+
+  <div v-else>
+    <p>Error 500: Invalid chapter or lesson</p>
   </div>
 </template>
 
