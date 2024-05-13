@@ -31,7 +31,11 @@
               class="hover:text-blue-500"
               v-for="(lesson, index) in chapter.lessons"
               :key="lesson.slug"
-              :to="`/course/chapter/${chapter.slug}/lesson/${lesson.slug}`"
+              :to="lesson.path"
+              :class="{
+                'text-blue-800': lesson.path === $route.fullPath,
+                'text-black': lesson.path !== $route.fullPath
+                }"
             >
               <span>{{ index + 1 }}.</span>
               <span>{{ lesson.title }}</span>

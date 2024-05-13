@@ -26,15 +26,15 @@ const lesson = computed(() => {
     <h2 class="text-lg font-semibold upp mb-2">{{ lesson?.title }}</h2>
 
     <div class="flex flex-col space-y-1 mb-5">
-      <a v-if="lesson?.sourceUrl"
+      <NuxtLink v-if="lesson?.sourceUrl"
       class=" font-normal text-sm underline text-gray-500 hover:text-gray-800"
-      :href="lesson.sourceUrl"> Download URL </a>
+      :to="lesson.sourceUrl"> Download URL </NuxtLink>
 
-      <a v-if="lesson?.downloadUrl"
+      <NuxtLink v-if="lesson?.downloadUrl"
       class=" font-normal text-sm underline text-gray-500 hover:text-gray-800" 
-      :href="lesson?.downloadUrl">
+      :to="lesson.downloadUrl">
         Download Video
-      </a>
+      </NuxtLink>
     </div>
     
     <VideoPlayer 
