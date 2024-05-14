@@ -24,9 +24,7 @@ useHead({
   title: title
 })
 
-const progress = useState('progress', () => {
-  return []
-})
+const progress = useLocalStorage('progress', []);
 
 const isLessonComplete = computed(() => {
 	if (!progress.value[chapter.value.number - 1]) {
@@ -82,6 +80,7 @@ const toggleComplete = () => {
 
     <p class="mb-4">{{ lesson?.text }}</p>
 
+    
     <LessonCompleteButton  
       :model-value="isLessonComplete"
       @update:model-value="toggleComplete"
