@@ -1,7 +1,7 @@
 <script setup>
 import VideoPlayer from '~/components/VideoPlayer.vue';
 
-const course = useCourse(); //Auto import na yung useCourse galing sa composables folder./////////
+const course = useCourse(); //Auto import na yung useCourse galing sa composables folder.
 const route = useRoute(); //Build in na ito sa nuxt
 
 const chapter = computed(() => {
@@ -15,6 +15,43 @@ const lesson = computed(() => {
     (lesson) => lesson.slug === route.params.lessonSlug
   );
 });
+
+const title = computed(() => {
+  return `${lesson.value.title} - ${chapter.value.title}`
+})
+
+useHead({
+  title: title
+})
+
+const progress = useState('progress', () => {
+  return []
+})
+
+const isLessonComplete = computed(() => {
+	if (!progress.value[chapter.value.number - 1]) {
+		return false;
+	}
+
+	if (!progress.value[chapter.value.number - 1][lesson.value.number - 1]) {
+		return false;
+	}
+
+	return progress.value[chapter.value.number - 1][lesson.value.number - 1];
+});
+
+const toggleComplete = () => {
+	if (!progress.value[chapter.value.number - 1]) {
+		progress.value[chapter.value.number - 1] = [];
+	}
+
+	progress.value[chapter.value.number - 1][lesson.value.number - 1] = !isLessonComplete.value;
+
+  //Just for debug
+  console.log(`${chapter.value.number - 1} - ${lesson.value.number - 1} = ${isLessonComplete.value}`);
+  console.log(progress.value);
+};
+
 </script>
 
 <template>
@@ -43,7 +80,13 @@ const lesson = computed(() => {
       class="mb-2"
     />
 
-    <p>{{ lesson?.text }}</p>
+    <p class="mb-4">{{ lesson?.text }}</p>
+
+    <LessonCompleteButton  
+      :model-value="isLessonComplete"
+      @update:model-value="toggleComplete"
+    />
+
   </div>
 
   <div v-else>
