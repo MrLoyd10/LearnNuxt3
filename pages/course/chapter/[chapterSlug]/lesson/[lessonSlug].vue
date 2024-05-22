@@ -4,17 +4,35 @@ import VideoPlayer from '~/components/VideoPlayer.vue';
 const course = useCourse(); //Auto import na yung useCourse galing sa composables folder.
 const route = useRoute(); //Build in na ito sa nuxt
 
+console.log(course)
+
 const chapter = computed(() => {
   return course.chapters.find(
     (chapter) => chapter.slug === route.params.chapterSlug
   );
 });
 
+if (!chapter.value) {
+  console.log("There is a error in chapter")
+  throw createError({
+    statusCode: 404,
+    message: 'Chapter page not found'
+  })
+}
+
 const lesson = computed(() => {
   return chapter.value?.lessons.find(
     (lesson) => lesson.slug === route.params.lessonSlug
   );
 });
+
+if (!lesson.value) {
+  console.log("There is a error in lesson")
+  throw createError({
+    statusCode: 404,
+    message: 'Lesson page not found'
+  })
+}
 
 const title = computed(() => {
   return `${lesson.value.title} - ${chapter.value.title}`
@@ -53,7 +71,7 @@ const toggleComplete = () => {
 </script>
 
 <template>
-  <div v-if="lesson">
+  <div>
     <h3 class="font-semibold text-slate-400 uppercase mb-2">
       Lesson {{ chapter?.number }}-{{ lesson?.number }}
     </h3>
@@ -86,10 +104,6 @@ const toggleComplete = () => {
       @update:model-value="toggleComplete"
     />
 
-  </div>
-
-  <div v-else>
-    <p>Error 500: Invalid chapter or lesson</p>
   </div>
 </template>
 

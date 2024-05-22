@@ -1,5 +1,12 @@
 <script setup>
+  const route = useRoute();
   const { chapters } = useCourse();
+  
+  if (route.params === null || route.params === undefined || Object.keys(route.params).length === 0) {
+  // Navigate to the first lesson path in the first chapter
+    navigateTo(chapters[0].lessons[0].path);
+  }
+
 </script>
 
 
@@ -45,9 +52,7 @@
         </div>
 
         <div class="w-9/12 bg-white p-6 rounded-md">
-          
           <NuxtPage />
-        
         </div>
       </div>
 
