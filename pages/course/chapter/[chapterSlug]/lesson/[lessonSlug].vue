@@ -3,36 +3,55 @@ import VideoPlayer from '~/components/VideoPlayer.vue';
 
 const course = useCourse(); //Auto import na yung useCourse galing sa composables folder.
 const route = useRoute(); //Build in na ito sa nuxt
+const { chapterSlug, lessonSlug } = route.params;
+const lesson = await useLesson(chapterSlug, lessonSlug);
 
 console.log(course)
+
+// Check first if its valid before render the page
+definePageMeta({
+  middleware: [
+    function ({ params }, ) {
+      const course = useCourse();
+
+      const chapter = course.chapters.find(
+        (chapter) => chapter.slug === params.chapterSlug
+      );
+
+      if (!chapter) {
+        console.log("There is a error in chapter")
+        return abortNavigation(
+          createError({
+            statusCode: 404,
+            message: 'Chapter page not found'
+          })
+        )
+      }
+
+      const lesson = chapter.lessons.find(
+        (lesson) => lesson.slug === params.lessonSlug
+      );
+
+      if (!lesson) {
+        console.log("There is a error in lesson")
+        return abortNavigation(
+          createError({
+            statusCode: 404,
+            message: 'Lesson page not found'
+          })
+        )
+      }
+    },
+    'auth'
+  ],
+})
+
 
 const chapter = computed(() => {
   return course.chapters.find(
     (chapter) => chapter.slug === route.params.chapterSlug
   );
 });
-
-if (!chapter.value) {
-  console.log("There is a error in chapter")
-  throw createError({
-    statusCode: 404,
-    message: 'Chapter page not found'
-  })
-}
-
-const lesson = computed(() => {
-  return chapter.value?.lessons.find(
-    (lesson) => lesson.slug === route.params.lessonSlug
-  );
-});
-
-if (!lesson.value) {
-  console.log("There is a error in lesson")
-  throw createError({
-    statusCode: 404,
-    message: 'Lesson page not found'
-  })
-}
 
 const title = computed(() => {
   return `${lesson.value.title} - ${chapter.value.title}`

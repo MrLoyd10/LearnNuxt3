@@ -25,10 +25,11 @@
 
 <script lang="ts" setup>
   const error = useError();
+	const firstLesson = useFirstLesson();
 
 	const handleError = () => {
 		clearError({
-			redirect: '/course'
+			redirect: firstLesson.path
 		})
 	}
 </script>
