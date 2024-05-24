@@ -1,20 +1,20 @@
 <script setup>
 import VideoPlayer from '~/components/VideoPlayer.vue';
 
-const course = useCourse(); //Auto import na yung useCourse galing sa composables folder.
+const course = await useCourse(); //Auto import na yung useCourse galing sa composables folder.
 const route = useRoute(); //Build in na ito sa nuxt
 const { chapterSlug, lessonSlug } = route.params;
 const lesson = await useLesson(chapterSlug, lessonSlug);
 
-console.log(course)
+console.log(course.value)
 
 // Check first if its valid before render the page
 definePageMeta({
   middleware: [
-    function ({ params }, ) {
-      const course = useCourse();
+    async function ({ params }, ) {
+      const course = await useCourse();
 
-      const chapter = course.chapters.find(
+      const chapter = course.value.chapters.find(
         (chapter) => chapter.slug === params.chapterSlug
       );
 
@@ -48,7 +48,7 @@ definePageMeta({
 
 
 const chapter = computed(() => {
-  return course.chapters.find(
+  return course.value.chapters.find(
     (chapter) => chapter.slug === route.params.chapterSlug
   );
 });

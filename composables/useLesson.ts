@@ -1,15 +1,8 @@
+import type { LessonWithPath } from "~/types/course";
+
 export default async (chapterSlug: string, lessonSlug: string) => {
-  
-  const { data, error } = await useFetch(
-    `/api/course/chapter/${chapterSlug}/lesson/${lessonSlug}`
-  )
-
-  if (error.value) {
-    throw createError({
-      ...error.value,
-      statusMessage: `Could not fetch lesson ${lessonSlug} in chapter ${chapterSlug}`,
-    })
-  }
-
-  return data;
+  // Use sessionStorage to cache the lesson data
+  const url = `/api/course/chapter/${chapterSlug}/lesson/${lessonSlug}`;
+  const lesson = await useFetchWithCache<LessonWithPath>(url);
+  return lesson;
 }

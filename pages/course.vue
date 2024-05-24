@@ -1,10 +1,10 @@
 <script setup>
   const route = useRoute();
-  const { chapters } = useCourse();
+  const course = await useCourse();
   
   if (route.params === null || route.params === undefined || Object.keys(route.params).length === 0) {
   // Navigate to the first lesson path in the first chapter
-    navigateTo(chapters[0].lessons[0].path);
+    navigateTo(course.value.chapters[0].lessons[0].path);
   }
 
 </script>
@@ -29,7 +29,7 @@
 
           <div
             class="flex flex-col space-y-3 mb-4"
-            v-for="chapter in chapters" 
+            v-for="chapter in course.chapters" 
             :key="chapter.slug"
           >
             <h2 class=" font-semibold mb-2">{{ chapter.title }}</h2>

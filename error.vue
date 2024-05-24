@@ -1,3 +1,4 @@
+
 <template>
 	<Nuxtlayout>
 		<div class="flex justify-center items-center py-20">
@@ -24,11 +25,11 @@
 </template>
 
 <script lang="ts" setup>
-  const error = useError();
-	const firstLesson = useFirstLesson();
+  	const error = useError();
+	const firstLesson = await useFirstLesson();
 
-	const handleError = () => {
-		clearError({
+	const handleError = async () => {
+		await clearError({
 			redirect: firstLesson.path
 		})
 	}
